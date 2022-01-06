@@ -36,20 +36,6 @@ public class TrelloClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TrelloClient.class);
 
-    /*private URI urlBuilder() {
-        URI url = UriComponentsBuilder.fromHttpUrl(trelloApiEndpoint + "/members/" + trelloUsername + "/boards")
-                .queryParam("key", trelloAppKey)
-                .queryParam("token", trelloToken)
-                .queryParam("fields", "name,id")
-                .queryParam("lists", "all")
-                .build()
-                .encode()
-                .toUri();
-
-        return url;
-    }*/
-
-
     public List<TrelloBoardDto> getTrelloBoards() {
         URI url = UriComponentsBuilder.fromHttpUrl(trelloConfig.getTrelloApiEndpoint() + "/members/"
                         + trelloConfig.getTrelloUsername() + "/boards")
@@ -74,9 +60,6 @@ public class TrelloClient {
             LOGGER.error(e.getMessage(), e);
             return Collections.emptyList();
         }
-      /*  return Optional.ofNullable(boardsResponse)
-                .map(Arrays::asList)
-                .orElse(Collections.emptyList());*/
     }
 
     public CreatedTrelloCard createNewCard(TrelloCardDto trelloCardDto) {

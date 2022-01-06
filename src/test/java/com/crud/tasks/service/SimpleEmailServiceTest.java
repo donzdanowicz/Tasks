@@ -33,11 +33,8 @@ class SimpleEmailServiceTest {
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
 
-        String toCc = mail.getToCc();
-        Optional<String> optToCc = Optional.ofNullable(toCc);
-
-        if(optToCc.isPresent()) {
-            mailMessage.setCc(String.valueOf(optToCc));
+        if(Optional.ofNullable(mail.getToCc()).isPresent()) {
+            mailMessage.setCc(String.valueOf(mail.getToCc()));
         }
 
         //When

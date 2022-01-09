@@ -33,9 +33,7 @@ class SimpleEmailServiceTest {
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
 
-        if(Optional.ofNullable(mail.getToCc()).isPresent()) {
-            mailMessage.setCc(String.valueOf(mail.getToCc()));
-        }
+        Optional.ofNullable(mail.getToCc()).ifPresent(v -> mailMessage.setCc(String.valueOf(mail.getToCc())));
 
         //When
         simpleEmailService.send(mail);

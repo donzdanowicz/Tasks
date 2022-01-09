@@ -32,10 +32,9 @@ public class TrelloService {
                         adminConfig.getAdminMail(),
                         SUBJECT,
                         "New card: " + trelloCardDto.getName() + " has been created on your Trello account",
-                        "madpz89@gmail.com"
+                        null
                 )));
 
-        System.out.println(adminConfig.getAdminMail());
         return newCard;
     }
 }

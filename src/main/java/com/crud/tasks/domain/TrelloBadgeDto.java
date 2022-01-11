@@ -18,5 +18,5 @@ public class TrelloBadgeDto {
     private int votes;
 
     @JsonProperty("attachmentsByType")
-    private List<TrelloAttachmentByTypeDto> attachmentsByType;
+    private TrelloAttachmentByTypeDto attachmentsByType;
 }

@@ -4,5 +4,10 @@
       "name": "admin.mail",
       "type": "java.lang.String",
       "description": "Description for admin.mail."
-  }
-] }
+    },
+    {
+      "name": "admin.mail",
+      "type": "java.lang.String",
+      "description": "Description for admin.mail."
+    }
+  ] }

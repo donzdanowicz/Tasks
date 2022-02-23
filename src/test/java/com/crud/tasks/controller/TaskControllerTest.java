@@ -6,8 +6,6 @@ import com.crud.tasks.service.DbService;
 import com.google.gson.Gson;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,11 +14,7 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -78,8 +72,11 @@ class TaskControllerTest {
     @Test
     void shouldGetTasks() throws Exception {
         // Given
-        List<TaskDto> taskLists = List.of(new TaskDto(1L, "New task", "New task's content"));
-        when(taskController.getTasks()).thenReturn(taskLists);
+        List<TaskDto> taskListsDto = List.of(new TaskDto(1L, "New task", "New task's content"));
+        List<Task> taskLists = List.of(taskMapper.mapToTask(taskListsDto.get(0)));
+        when(taskController.getTasks()).thenReturn(taskListsDto);
+        when(dbService.getAllTasks()).thenReturn(taskLists);
+
 
         //When & Then
         mockMvc
@@ -96,18 +93,26 @@ class TaskControllerTest {
     @Test
     public void shouldDeleteTask() throws Exception {
         //Given
-        List<TaskDto> taskLists = List.of(new TaskDto(1L, "New task", "New task's content"));
+        TaskDto taskDto = new TaskDto(1L, "New task", "New task's content");
 
         //When
-        taskController.deleteTask(1L);
+        taskController.createTask(taskDto);
 
         //Then
-        mockMvc
-                .perform(MockMvcRequestBuilders
-                        .delete("/v1/task/deleteTask/1")
+        mockMvc.
+                perform(MockMvcRequestBuilders
+                    .delete("/v1/task/deleteTask/1")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().is(200)) // or isOk()
-                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(0)));
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(0)));
+
+//        //Then
+//        mockMvc
+//                .perform(MockMvcRequestBuilders
+//                        .get("/v1/task/getTasks")
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(MockMvcResultMatchers.status().is(200)) // or isOk()
+//                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(0)));
     }
 
     @Test
@@ -123,11 +128,12 @@ class TaskControllerTest {
         //When & Then
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .put("/v1/task/updateTask/1")
+                        .put("/v1/task/updateTask")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
                         .content(jsonContent))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2L)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("New task")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("Updated content")));
     }

@@ -4,6 +4,7 @@ import com.crud.tasks.domain.Task;
 import com.crud.tasks.repository.TaskRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class DbServiceTest {
 
-    @Mock
+    @InjectMocks
     DbService dbService;
 
     @Mock
@@ -29,21 +30,23 @@ class DbServiceTest {
         Task task2 = new Task(2L, "Task2", "New Task 2");
         taskList.add(task1);
         taskList.add(task2);
+        when(repository.findAll()).thenReturn(taskList);
 
         //When
-        when(dbService.getAllTasks()).thenReturn(taskList);
+        List<Task> result = dbService.getAllTasks();
 
         //Then
-        assertEquals(2, dbService.getAllTasks().size());
+        assertEquals(2, result.size());
     }
 
     @Test
     void getTask() {
         //Given
         Task task1 = new Task(1L, "Task", "New Task");
+        when(repository.findById(1L)).thenReturn(Optional.of(task1));
 
         //When
-        when(dbService.getTask(1L)).thenReturn(Optional.of(task1));
+        Optional<Task> result = dbService.getTask(1L);
 
         //Then
         assertEquals(Optional.of(task1), dbService.getTask(1L));
@@ -65,9 +68,9 @@ class DbServiceTest {
     void saveTask() {
         //Given
         Task task = new Task(1L, "Task", "New Task");
+        when(repository.findById(1L)).thenReturn(Optional.of(task));
 
         //When
-        when(dbService.getTask(1L)).thenReturn(Optional.of(task));
         Task updatedTask = dbService.getTask(1L).orElseThrow();
         updatedTask.setContent("Updated Task");
         dbService.saveTask(updatedTask);

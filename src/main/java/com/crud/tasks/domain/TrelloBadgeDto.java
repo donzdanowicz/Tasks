@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-//@NoArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 public class TrelloBadgeDto {
 

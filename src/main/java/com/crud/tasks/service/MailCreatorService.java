@@ -51,7 +51,7 @@ public class MailCreatorService {
         context2.setVariable("message", message);
         context2.setVariable("hello", "Hello, " + adminConfig.getAdminName());
         context2.setVariable("how_many_tasks", "There are " + taskRepository.count() + " tasks.");
-        context2.setVariable("goodbye", "Thank you for using our app :)");
+        context2.setVariable("goodbye", "Thank you for using this app :)");
         context2.setVariable("company_name", "CompanyName: " + adminConfig.getCompanyName());
         context2.setVariable("company_email", ". Company email: " + adminConfig.getCompanyEmail());
 

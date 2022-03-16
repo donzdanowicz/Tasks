@@ -33,7 +33,7 @@ public class EmailScheduler {
         );
     }
 
-    @Scheduled(cron = "0 0 12 * * *")
+    @Scheduled(cron = "0 0 18 * * *")
     //@Scheduled(fixedDelay = 10000)
     public void sendCountingTasksEmail() {
         long size = taskRepository.count();
